@@ -2,6 +2,7 @@ package Menu;
 
 import Manage.User;
 import Methods.MethodsUser;
+import Methods.ReadWriteFile;
 
 import java.util.Scanner;
 
@@ -45,7 +46,11 @@ public class Menu {
                         System.out.println(user);
                         break;
                     }
-                    case 6->{}
+                    case 6->{
+                        String PATH = "C:\\Users\\TTC\\Desktop\\BaiThi\\src\\User.csv";
+                        ReadWriteFile.readCSV(PATH);
+                        break;
+                    }
                     case 7->{}
                     case 8->{
                         System.exit(0);

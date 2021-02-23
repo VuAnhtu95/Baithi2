@@ -4,17 +4,16 @@ import Manage.User;
 import Menu.MeThodGet;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MethodsUser {
-    static ArrayList<User> users = new ArrayList<>();
-    static final String PATH = "C:\\Users\\TTC\\Desktop\\BaiThi\\src\\User.dat";
+    static final String PATH = "C:\\Users\\TTC\\Desktop\\BaiThi\\src\\User.csv";
+    static ArrayList<User> users = (ArrayList<User>) ReadWriteFile.readCSV(PATH);
 
-    public MethodsUser(){
-        users = (ArrayList<User>) ReadAndWrite.readFromFile(PATH);
-    }
     public static void add(User user){
         users.add(user);
-        ReadAndWrite.writeObjectToFile(users,PATH);
+        ReadWriteFile.writeToFileCsv(users,PATH);
     }
 
     public static void show(){
@@ -33,19 +32,21 @@ public class MethodsUser {
                 search(MeThodGet.getNumberPhoneDelete());
             }
         }
-        ReadAndWrite.writeObjectToFile(users,PATH);
+        ReadWriteFile.writeToFileCsv(users,PATH);
     }
 
     public static void update(String numberPhone){
         for (User user: users) {
             if (user.getNumberPhone().equals(numberPhone)){
-                user = MeThodGet.update();
+                user.setName(MeThodGet.getNameUpdate());
+                user.setEmail(MeThodGet.getEmailUpdate());
+                user.setNgaySinh(MeThodGet.getDatelUpdate());
             }else {
                 System.out.println("Không tìm được số điện thoại trên ");
                 search(MeThodGet.getNumberPhoneUpdate());
             }
         }
-        ReadAndWrite.writeObjectToFile(users,PATH);
+        ReadWriteFile.writeToFileCsv(users,PATH);
     }
     public static boolean search(String numberPhone){
         boolean search = false;
@@ -65,5 +66,16 @@ public class MethodsUser {
             }
         }
         return a;
+    }
+
+    public static boolean checkEmail(String email){
+        Pattern pattern = Pattern.compile("([A-Za-z0-9-_.]+@[A-Za-z0-9-_]+(?:\\.[A-Za-z0-9]+)+)");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    public static boolean checkPhoneNumber(String phoneNumber){
+        Pattern pattern = Pattern.compile("^\\d{2}-[0]\\d{9}");
+        Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.matches();
     }
 }
